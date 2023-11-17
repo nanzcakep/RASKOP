@@ -38,4 +38,8 @@ Route::post('/pelanggan',[CustomerController::class,'addCustomer']);
 //Reservasi Routes
 Route::get('/reservasi',[ReservasiController::class,'getReservasi']);
 Route::post('/reservasi',[ReservasiController::class,'addReservasi']);
+Route::put('/reservasi/{kodeReservasi}',[ReservasiController::class,'updateReservasi']);
 Route::get('/available-reservations', [ReservasiController::class, 'getAvailableReservations']);
+Route::get('/rereservations-time-check', [ReservasiController::class, 'reservationsTimeCheck']);
+Route::get('/cek-reservasi', [ReservasiController::class, 'cekReservasi']);
+

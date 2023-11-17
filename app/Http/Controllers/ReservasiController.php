@@ -167,4 +167,76 @@ class ReservasiController extends Controller
         return response()->json(['available_times' => $result]);
 
     }
+
+
+    public function reservationsTimeCheck(Request $request){
+        // Validasi input request jika diperlukan
+        $request->validate([
+            'room_id' => 'required|integer',
+            'date' => 'required|date_format:Y-m-d',
+        ]);
+
+        // Ambil data dari request
+        $roomID = $request->input('room_id');
+        $date = $request->input('date');
+
+        // Dapatkan daftar reservasi untuk ruangan dan tanggal tertentu
+        $existingReservations = Reservasi::where('id_room', $roomID)
+            ->where('tanggal', $date)
+            ->get();
+
+        // Inisialisasi array untuk menyimpan jam yang sudah direservasi
+        $reservedTimes = [];
+
+        // Loop melalui setiap reservasi dan tambahkan jam ke dalam array
+        foreach ($existingReservations as $reservation) {
+            // Periksa status reservasi, jika 'pending' atau 'approved', tambahkan ke array
+            if ($reservation->status === 'pending' || $reservation->status === 'approved') {
+                $startDateTime = $reservation->tanggal . ' ' . $reservation->jam_mulai;
+                $endDateTime = $reservation->tanggal . ' ' . $reservation->jam_selesai;
+        
+                // Tambahkan rentang waktu ke dalam array
+                $reservedTimes[] = [
+                    'start_time' => date('H:i', strtotime($startDateTime)),
+                    'end_time' => date('H:i', strtotime($endDateTime)),
+                ];
+            }
+        }
+
+        // Mengembalikan respons JSON dengan waktu yang sudah direservasi
+        return response()->json(['reserved_times' => $reservedTimes]);
+    
+    }
+
+
+    public function cekReservasi(Request $request){
+        $kodeReservasi = $request->kode;
+
+        $reservasi = Reservasi::with(['room','customer'])
+                                ->where('kode_reservasi',$kodeReservasi)->get();
+
+        return ReservasiResource::collection($reservasi);
+
+    }
+
+    public function updateReservasi(Request $request,$kodeReservasi){
+       $reservasiData = Reservasi::where('kode_reservasi',$kodeReservasi)->first();
+
+       if(!$reservasiData){
+            return response()->json([
+                'data' => null
+            ]);
+       }
+
+       
+       $reservasiData->update([
+        'status' => $request->status
+        ]);
+
+        return response()->json([
+            'message' => 'Reservasi berhasil di update'
+        ]);
+
+    }
+
 }
