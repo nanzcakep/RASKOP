@@ -6,7 +6,7 @@
     @vite('resources/css/app.css')
     
     <title>Ruangan</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap" async defer></script>
+    
 </head>
 <body>
     {{-- Start Nav --}}
@@ -250,7 +250,29 @@
     {{-- End Content --}}
 
 
-      
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    // Function to toggle modal visibility
+    function toggleModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.toggle('hidden');
+    }
+
+    // Attach click event to buttons with data-modal-toggle attribute
+    $('[data-modal-toggle]').on('click', function () {
+      const targetModalId = $(this).data('modal-target');
+      toggleModal(targetModalId);
+    });
+
+    // Attach click event to close button within modal
+    $('[data-modal-hide]').on('click', function () {
+      const modalId = $(this).data('modal-hide');
+      toggleModal(modalId);
+    });
+  });
+</script>
     
   
 </body>

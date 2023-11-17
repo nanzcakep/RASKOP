@@ -38,8 +38,4 @@ Route::post('/pelanggan',[CustomerController::class,'addCustomer']);
 //Reservasi Routes
 Route::get('/reservasi',[ReservasiController::class,'getReservasi']);
 Route::post('/reservasi',[ReservasiController::class,'addReservasi']);
-
-Route::get('testing', function () {
-    $response = Http::get('http://127.0.0.1:8000/api/ruangan');
-    dd($response);
-});
+Route::get('/available-reservations', [ReservasiController::class, 'getAvailableReservations']);
