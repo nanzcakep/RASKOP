@@ -1,97 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
-    <title>Rasa Kopi</title>
+    @vite('resources/css/app.css')
+    @vite('resources/js/app.js')
+    <title>Ruangan</title>
 </head>
 <body>
+  <div class="min-h-screen antialiased sans-serif bg-gray-200">
+    <div x-data="app()" x-init="[initDate(), getNoOfDays()]" x-cloak>
+      <div class="container mx-auto px-4 py-2 md:py-10">
+        <div class="mb-5 w-64">
+          <label for="datepicker" class="font-bold mb-1 text-gray-700 block">Select Date</label>
+          <div class="relative">
+            <input type="hidden" name="date" x-ref="date" :value="datepickerValue" />
+            <input type="text" x-on:click="showDatepicker = !showDatepicker" x-model="datepickerValue" x-on:keydown.escape="showDatepicker = false" class="w-full pl-4 pr-10 py-3 leading-none rounded-lg shadow-sm focus:outline-none text-gray-600 font-medium focus:ring focus:ring-blue-600 focus:ring-opacity-50" placeholder="Select date" readonly />
+  
+            <div class="absolute top-0 right-0 px-3 py-2">
+              <svg class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
 
-<!-- Start Nav  -->
-<div class="container">
-<nav class="navbar navbar-expand-lg" style="background-color: #164138;">
-  <div class="container-fluid">
-    <!-- VELASANS FONT RASAKOPI -->
-    <a class="navbar-brand" href="#">
-      <img src="{{ asset('assets/images/Rasakopi-logo.png') }}" alt="Bootstrap" width="30" height="24">
-    </a>
-    <a class="navbar-brand" href="#"><span class="navbar-brand mb-0 h1 text-white" id="raskop-text">RASA KOPI</span></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link active text-white" aria-current="page" href="#">Home</a>
+            <div 
+            class="bg-white mt-12 rounded-lg shadow p-4 absolute top-0 left-0"
+            style="width: 17rem" x-show="showDatepicker"
+            @click.away="showDatepicker = false"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="opacity-0 transform scale-90"
+            x-transition:enter-end="opacity-100 transform scale-100"
+            x-transition:leave="transition ease-in duration-75"
+            x-transition:leave-start="opacity-100 transform scale-100"
+            x-transition:leave-end="opacity-0 transform scale-90"
+            >
+              <div class="flex justify-between items-center mb-2">
+                <div>
+                  <span x-text="MONTH_NAMES[month]" class="text-lg font-bold text-gray-800"></span>
+                  <span x-text="year" class="ml-1 text-lg text-gray-600 font-normal"></span>
+                </div>
+                <div>
+                  <button type="button" class="focus:outline-none focus:shadow-outline transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-100 p-1 rounded-full" @click="if (month == 0) {
+                          year--;
+                          month = 12;
+                        } month--; getNoOfDays()">
+                    <svg class="h-6 w-6 text-gray-400 inline-flex" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                  <button type="button" class="focus:outline-none focus:shadow-outline transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-100 p-1 rounded-full" @click="if (month == 11) {
+                          month = 0; 
+                          year++;
+                        } else {
+                          month++; 
+                        } getNoOfDays()">
+                    <svg class="h-6 w-6 text-gray-400 inline-flex" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+  
+              <div class="flex flex-wrap mb-3 -mx-1">
+                <template x-for="(day, index) in DAYS" :key="index">
+                  <div style="width: 14.26%" class="px-0.5">
+                    <div x-text="day" class="text-gray-800 font-medium text-center text-xs"></div>
+                  </div>
+                </template>
+              </div>
+  
+              <div class="flex flex-wrap -mx-1">
+                <template x-for="blankday in blankdays">
+                  <div style="width: 14.28%" class="text-center border p-1 border-transparent text-sm"></div>
+                </template>
+                <template x-for="(date, dateIndex) in no_of_days" :key="dateIndex">
+                  <div style="width: 14.28%" class="px-1 mb-1">
+                    <div x-on:click="getDateValue(date)" x-text="date" class="cursor-pointer text-center text-sm rounded-full leading-loose transition ease-in-out duration-100" :class="{
+                        'bg-indigo-200': isToday(date) == true, 
+                        'text-gray-600 hover:bg-indigo-200': isToday(date) == false && isSelectedDate(date) == false,
+                        'bg-indigo-500 text-white hover:bg-opacity-75': isSelectedDate(date) == true 
+                      }"></div>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  
+    <script>
+      const MONTH_NAMES = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+      const MONTH_SHORT_NAMES = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  
+      function app() {
+        return {
+          showDatepicker: false,
+          datepickerValue: "",
+          selectedDate: new Date().toISOString().slice(0, 10),
+          dateFormat: "DD-MM-YYYY",
+          month: "",
+          year: "",
+          no_of_days: [],
+          blankdays: [],
+          initDate() {
+            let today;
+            if (this.selectedDate) {
+              today = new Date(Date.parse(this.selectedDate));
+            } else {
+              today = new Date();
+            }
+            this.month = today.getMonth();
+            this.year = today.getFullYear();
+            this.datepickerValue = this.formatDateForDisplay(
+              today
+            );
+          },
+          formatDateForDisplay(date) {
+            let formattedDay = DAYS[date.getDay()];
+            let formattedDate = ("0" + date.getDate()).slice(
+              -2
+            ); // appends 0 (zero) in single digit date
+            let formattedMonth = MONTH_NAMES[date.getMonth()];
+            let formattedMonthShortName =
+              MONTH_SHORT_NAMES[date.getMonth()];
+            let formattedMonthInNumber = (
+              "0" +
+              (parseInt(date.getMonth()) + 1)
+            ).slice(-2);
+            let formattedYear = date.getFullYear();
+            if (this.dateFormat === "DD-MM-YYYY") {
+              return `${formattedDate}-${formattedMonthInNumber}-${formattedYear}`; // 02-04-2021
+            }
+            // if (this.dateFormat === "YYYY-MM-DD") {
+            //   return `${formattedYear}-${formattedMonthInNumber}-${formattedDate}`; // 2021-04-02
+            // }
+            // if (this.dateFormat === "D d M, Y") {
+            //   return `${formattedDay} ${formattedDate} ${formattedMonthShortName} ${formattedYear}`; // Tue 02 Mar 2021
+            // }
+            // return `${formattedDay} ${formattedDate} ${formattedMonth} ${formattedYear}`;
+          },
+          isSelectedDate(date) {
+            const d = new Date(this.year, this.month, date);
+            return this.datepickerValue ===
+              this.formatDateForDisplay(d) ?
+              true :
+              false;
+          },
+          isToday(date) {
+            const today = new Date();
+            const d = new Date(this.year, this.month, date);
+            return today.toDateString() === d.toDateString() ?
+              true :
+              false;
+          },
+          getDateValue(date) {
+            let selectedDate = new Date(
+              this.year,
+              this.month,
+              date
+            );
+            this.datepickerValue = this.formatDateForDisplay(
+              selectedDate
+            );
+            this.isSelectedDate(date);
+            this.showDatepicker = false;
+          },
+          getNoOfDays() {
+            let daysInMonth = new Date(
+              this.year,
+              this.month + 1,
+              0
+            ).getDate();
+            // find where to start calendar day of week
+            let dayOfWeek = new Date(
+              this.year,
+              this.month
+            ).getDay();
+            let blankdaysArray = [];
+            for (var i = 1; i <= dayOfWeek; i++) {
+              blankdaysArray.push(i);
+            }
+            let daysArray = [];
+            for (var i = 1; i <= daysInMonth; i++) {
+              daysArray.push(i);
+            }
+            this.blankdays = blankdaysArray;
+            this.no_of_days = daysArray;
+          },
+        };
+      }
+    </script>
   </div>
-</nav>
-</div>
-<!-- End Nav -->
-
-<!--  -->
-<div class="container">
-<section id="hero">
-    <div class="hero-container">
-      <h1 style="font-family: 'DM Sans', sans-serif;"><b>RASA KOPI</b></h1>
-      <h2 class="transisi-text">Kenang masanya, simpan rasanya</h2>
-      <a href="#about" class="btn-scroll scrollto" title="Scroll Down"><i class="bx bx-chevron-down"></i></a>
-    </div>
-</section>
-</div>
-<!--  -->
-
-<!--  -->
-
-<div class="container  mt-5 text-left">
-  <h1>Reservasi</h1>  
-  <div class="row">
-    <div class="col">
-      <h2>A</h2>
-      <img src="{{ asset('assets/images/Proyek Baru.png') }}" width="320px" alt="">
-      <div>  
-            <button class="btn btn-success" style="width: 320px;">Reservasi Now</button>
-        </div>
-    </div>
-    <div class="col">
-        <h2>B</h2>
-        <img src="{{ asset('assets/images/Proyek Baru.png') }}" width="320px" alt="">
-        <div>  
-            <button class="btn btn-success" style="width: 320px;">Reservasi Now</button>
-        </div>
-    </div>
-  </div>
-</div>
-<!--  -->
-
-<!--  -->
-<div class="container mt-5">
-
-</div>
-<!--  -->
-
-
-
- 
-{{-- <div class="container text-center mt-5">
-  <div class="row">
-    <div class="col-4">
-      1 of 2
-    </div>
-    <div class="col-8">
-        <h2 style="text-align: left;"><b>SELAMAT DATANG DI <span class="text-success">RASA KOPI</span></b></h2>
-        <h6  style="text-align: left;">Kenang masanya simpan rasanya</h6>
-        <p class="mt-4" style="text-align: left;">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iusto maiores, corrupti veritatis animi expedita distinctio suscipit, soluta numquam deleniti velit qui, blanditiis dolores quod magni adipisci cupiditate maxime dolore tempora!</p>
-        <button class="btn btn-success" style="float: left;" >Reservasi Here</button>
-    </div>
-  </div>
-</div> --}}
-
-    
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </html>

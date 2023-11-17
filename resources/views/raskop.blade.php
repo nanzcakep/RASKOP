@@ -7,18 +7,11 @@
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
     <title>Ruangan</title>
-    <style>
-        [x-cloak] {
-            display: none;
-        }
-    </style>
 </head>
 
 <body>
     {{-- Start Nav --}}
-    <nav class="bg-[#164138]" x-data="{
-        showNav: false
-    }" x-cloak>
+    <nav class="bg-[#164138]" x-data="navData()" x-cloak>
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="relative flex h-16 items-center justify-between">
                 <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -81,7 +74,7 @@
         </div>
     </nav>
     {{-- End Nav --}}
-    <div x-data="{ showModal: false }" x-cloak>
+    <div x-data="modalData()" x-cloak>
         <div class="container max-w-full h-[635px] relative"
             style="background: url('/assets/images/bg-logo2.png'); background-color: rgba(0, 0, 0, 0.4); background-blend-mode: multiply; ">
             <div
@@ -266,5 +259,16 @@
         </footer>
     </div>
 </body>
-
+<script>
+    function navData(){ 
+        return {
+            showNav: false
+        }
+    }
+    function modalData(){
+        return { 
+            showModal: false 
+        }
+    }
+</script>
 </html>
