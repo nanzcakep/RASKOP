@@ -6,12 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"
+        integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css"
+        integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Ruangan</title>
 </head>
 
-<body>
+<body class="no-scrollbar">
     {{-- Start Nav --}}
-    <nav class="bg-[#164138]" x-data="navData()" x-cloak>
+    <nav class="bg-green-main" x-data="navData()" x-cloak>
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div class="relative flex h-16 items-center justify-between">
                 <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -53,8 +59,7 @@
         </div>
 
         <!-- Mobile menu, show/hide based on menu state. -->
-        <div class="sm:hidden" id="mobile-menu" x-show="showNav"
-            x-transition:enter="transition ease-out duration-300"
+        <div class="sm:hidden" id="mobile-menu" x-show="showNav" x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 transform scale-90"
             x-transition:enter-end="opacity-100 transform scale-100"
             x-transition:leave="transition ease-in duration-300"
@@ -74,13 +79,17 @@
         </div>
     </nav>
     {{-- End Nav --}}
-    <div x-data="modalData()" x-cloak>
+    <div x-data="Data()" x-cloak>
+        <div x-show="isLoading" tabindex="-1"
+            class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-black opacity-75 flex flex-col items-center justify-center">
+            <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+        </div>
         <div class="container max-w-full h-[635px] relative"
             style="background: url('/assets/images/bg-logo2.png'); background-color: rgba(0, 0, 0, 0.4); background-blend-mode: multiply; ">
             <div
                 class="absolute inset-0 flex items-center justify-center text-white text-[34px] font-bold font-['DM Sans'] tracking-[3.40px]">
                 <p><span class="bg-[#E08756]">KENANG</span> MASANYA<br><span>SIMPAN <span
-                            class="bg-[#164138]">RASANYA</span></p>
+                            class="bg-green-main">RASANYA</span></p>
             </div>
         </div>
         <div class="container max-w-full mx-auto mt-4">
@@ -93,8 +102,9 @@
                                 <div class="w-[275px] lg:w-full">
                                     <h1 class="text-white text-4xl font-extrabold">Ruangan Dalam</h1>
                                     <button
-                                        class="bg-[#164138] text-white text-center w-full lg:w-1/3 py-1.5 px-5 mt-3 rounded-md border border-[#164138] hover:bg-transparent hover:text-[#164138] hover:scale-95 transition duration-300 ease-in-out"
-                                        type="button" x-on:click="showModal=true">Reservasi
+                                        class="bg-green-main text-white text-center w-full lg:w-1/3 py-1.5 px-5 mt-3 rounded-md border border-green-main hover:bg-transparent hover:text-green-main hover:scale-95 transition duration-300 ease-in-out"
+                                        type="button"
+                                        x-on:click="showModal=true;selectedRoom='Ruangan Dalam';roomId=6">Reservasi
                                     </button>
                                 </div>
                             </div>
@@ -113,8 +123,8 @@
                                 <div class="w-[275px] lg:w-full">
                                     <h1 class="text-white text-4xl font-extrabold">Ruangan Luar</h1>
                                     <button
-                                        class="bg-[#164138] text-white text-center w-full lg:w-1/3 py-1.5 px-5 mt-3 rounded-md border border-[#164138] hover:bg-transparent hover:text-[#164138] hover:scale-95 transition duration-300 ease-in-out"
-                                        type="button" x-on:click="showModal=true">Reservasi
+                                        class="bg-green-main text-white text-center w-full lg:w-1/3 py-1.5 px-5 mt-3 rounded-md border border-green-main hover:bg-transparent hover:text-green-main hover:scale-95 transition duration-300 ease-in-out"
+                                        type="button" x-on:click="showModal=true;selectedRoom='Ruangan Luar';roomId=5">Reservasi
                                     </button>
                                 </div>
                             </div>
@@ -135,7 +145,7 @@
             <div class="grid sm:grid-cols-1 xl:grid-cols-2 gap-[150px]">
                 <div class="col-span-1 mt-8">
                     <h2 class="text-6xl font-extrabold">
-                        <span class="bg-[#164138] text-white"> RASA</span>
+                        <span class="bg-green-main text-white"> RASA</span>
                         <span class="bg-[#E08756] text-white">KOPI</span>
                     </h2>
                     <div class="text-justify">
@@ -160,12 +170,13 @@
                 </div>
             </div>
         </div>
+        {{-- modal start --}}
         <div id="reservasi-modal" tabindex="-1"
-            class="fixed top-0 left-0 right-0 z-50  w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+            class="fixed top-0 left-0 right-0 z-40  w-full px-4 pt-5 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
             x-show="showModal" x-cloak>
             <div class="fixed top-0 left-0 right-0 bottom-0 backdrop-blur-sm bg-black/30"></div>
             <div class="mx-auto max-w-md relative w-full max-h-full" x-show="showModal"
-                x-on:click.away="showModal=false" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter="transition ease-out duration-300"
                 x-transition:enter-start="opacity-0 transform scale-90"
                 x-transition:enter-end="opacity-100 transform scale-100"
                 x-transition:leave="transition ease-in duration-300"
@@ -181,62 +192,223 @@
                         <span class="sr-only">Close modal</span>
                     </button>
                     <div class="px-6 py-6 lg:px-8">
-                        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Reservasi - Ruangan Dalam
+                        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Reservasi - <span
+                                x-text="selectedRoom"></span>
                         </h3>
-                        <form class="space-y-6" action="#" method="POST">
-                            <div>
-                                <label for="name"
-                                    class="block text-sm font-medium leading-6 text-gray-900">Nama</label>
-                                <div class="mt-2">
-                                    <input type="text" name="name" id="name" autocomplete="name"
-                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4"
-                                        placeholder="nanzcakep">
+                        <form class="" action="#" x-on:submit.prevent='submitModalOrder' method="POST">
+                            <div x-data="datepickers" x-init="[initDate(), getNoOfDays()]">
+                                <label for="datepicker" class="block text-sm font-medium leading-6 text-gray-900">
+                                    Tanggal
+                                </label>
+                                <div class="relative">
+                                    <input type="hidden" name="date" x-ref="date" :value="datepickerValue" />
+                                    <input type="text" id="datepicker"
+                                        x-on:click="showDatepicker = !showDatepicker" x-model="datepickerValue"
+                                        x-on:keydown.escape="showDatepicker = false"
+                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer"
+                                        placeholder="Select date" readonly />
+                                    <div class="absolute top-1.5 right-1 cursor-pointer"
+                                        x-on:click="showDatepicker=!showDatepicker">
+                                        <svg class="h-6 w-6 text-gray-700 hover:scale-105 hover:text-gray-400 transition-all ease-in"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                    <div class="bg-white mt-12 rounded-lg shadow p-4 absolute top-0 left-0 w-full"
+                                        x-show="showDatepicker" @click.away="showDatepicker = false"
+                                        x-transition:enter="transition ease-out duration-100"
+                                        x-transition:enter-start="opacity-0 transform scale-90"
+                                        x-transition:enter-end="opacity-100 transform scale-100"
+                                        x-transition:leave="transition ease-in duration-75"
+                                        x-transition:leave-start="opacity-100 transform scale-100"
+                                        x-transition:leave-end="opacity-0 transform scale-90">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <div>
+                                                <span x-text="MONTH_NAMES[month]"
+                                                    class="text-lg font-bold text-gray-800"></span>
+                                                <span x-text="year"
+                                                    class="ml-1 text-lg text-gray-600 font-normal"></span>
+                                            </div>
+                                            <div>
+                                                <button type="button"
+                                                    class="focus:outline-none focus:shadow-outline transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-100 p-1 rounded-full"
+                                                    :class="{
+                                                        'pointer-events-none opacity-25': month == todayMonth && year ==
+                                                            todayYear
+                                                    }"
+                                                    x-on:click="decrementMonth">
+                                                    <svg class="h-6 w-6 text-gray-400 inline-flex" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M15 19l-7-7 7-7" />
+                                                    </svg>
+                                                </button>
+                                                <button type="button"
+                                                    class="focus:outline-none focus:shadow-outline transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-100 p-1 rounded-full"
+                                                    x-on:click="incrementMonth">
+                                                    <svg class="h-6 w-6 text-gray-400 inline-flex" fill="none"
+                                                        viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M9 5l7 7-7 7" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-wrap mb-3 -mx-1">
+                                            <template x-for="(day, index) in DAYS" :key="index">
+                                                <div style="width: 14.26%" class="px-0.5">
+                                                    <div x-text="day"
+                                                        class="text-gray-800 font-medium text-center text-xs"></div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                        <div class="flex flex-wrap -mx-1">
+                                            <template x-for="blankday in blankdays">
+                                                <div style="width: 14.28%"
+                                                    class="text-center border p-1 border-transparent text-sm"></div>
+                                            </template>
+                                            <template x-for="(date, dateIndex) in no_of_days" :key="dateIndex">
+                                                <div style="width: 14.28%" class="px-1 mb-1">
+                                                    <div x-on:click="selectDate(date);" x-text="date"
+                                                        class="cursor-pointer text-center text-sm rounded-full leading-loose transition ease-in-out duration-100"
+                                                        :class="{
+                                                            'bg-indigo-200': isToday(date) == true,
+                                                            'opacity-25 pointer-events-none': isDateFutureOrCurrent(
+                                                                date) != true && isToday(date) != true,
+                                                            'text-gray-600 hover:bg-indigo-200': isToday(date) ==
+                                                                false &&
+                                                                isSelectedDate(date) == false,
+                                                            'bg-red-500 text-white hover:bg-opacity-75': isSelectedDate(
+                                                                    date) ==
+                                                                true
+                                                        }">
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div x-show="isDateSelected">
+                                    <div>
+                                        <label for="starthours"
+                                            class="block text-sm font-medium leading-6 text-gray-900 mt-2">
+                                            Jam Mulai
+                                        </label>
+                                        <div
+                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer">
+                                            <div class="flex">
+                                                <select name="starthours"
+                                                    class="pl-1 text-lg bg-transparent appearance-none outline-none"
+                                                    x-model="selectedHour">
+                                                    <template x-for="(time, index) in startHours"
+                                                        :key="index">
+                                                        <option x-model="time" class=""
+                                                            x-text="time < 10 ? `0${time}`:time">
+                                                        </option>
+                                                    </template>
+                                                </select>
+                                                <span class="">:</span>
+                                                <select name="startminutes"
+                                                    class="text-lg bg-transparent appearance-none outline-none"
+                                                    x-model="selectedMinute">
+                                                    <template x-for="minutes in 60">
+                                                        <option x-model="minutes" class=""
+                                                            x-text="minutes = minutes < 11 ? `0${minutes-1}`:minutes-1">
+                                                        </option>
+                                                    </template>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="endhour"
+                                            class="block text-sm font-medium leading-6 text-gray-900 mt-2">
+                                            Jam Selesai
+                                        </label>
+                                        <div
+                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 bg-slate-200 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 pointer-events-none">
+                                            <div class="flex">
+                                                <select name="endhour"
+                                                    class="pl-1 text-lg bg-transparent appearance-none outline-none">
+                                                    <option x-text="parseInt(selectedHour)+3" selected></option>
+                                                </select>
+                                                <span class="">:</span>
+                                                <select name="startminutes"
+                                                    class="text-lg bg-transparent appearance-none outline-none">
+                                                    <option x-text="selectedMinute" class=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                <label for="phone" class="block text-sm font-medium leading-6 text-gray-900">Nomer
-                                    WhatsApp</label>
-                                <div class="mt-2">
-                                    <input type="text" name="phone" id="phone" autocomplete="phone"
-                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4"
-                                        placeholder="+62xxxxxx">
+                            <div x-show="isDateSelected">
+                                <div>
+                                    <label for="name"
+                                        class="block text-sm font-medium leading-6 text-gray-900 mt-2">Nama</label>
+                                    <div class="">
+                                        <input type="text" name="name" id="name" autocomplete="name"
+                                        class="block w-full rounded-md border border-gray-300 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer"
+                                        x-model="name"
+                                        >
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <label for="faculty"
-                                    class="block text-sm font-medium leading-6 text-gray-900">Fakultas</label>
-                                <div class="mt-2">
-                                    <input type="text" name="faculty" id="faculty" autocomplete="faculty"
-                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4"
-                                        placeholder="FRI/Fakultas Rekayasa Industri">
+                                <div>
+                                    <label for="phone"
+                                        class="block text-sm font-medium leading-6 text-gray-900 mt-2">Nomer
+                                        WhatsApp</label>
+                                    <div class="">
+                                        <input type="text" name="phone" id="phone" autocomplete="phone"
+                                        class="block w-full rounded-md border border-gray-300 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer"
+                                            x-model="phone"
+                                            placeholder="+62xxxxxx">
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <label for="order"
-                                    class="block text-sm font-medium leading-6 text-gray-900">Order</label>
-                                <div class="mt-2">
-                                    <input type="text" name="order" id="order" autocomplete="order"
-                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4">
+                                <div>
+                                    <label for="faculty"
+                                        class="block text-sm font-medium leading-6 text-gray-900 mt-2">Fakultas</label>
+                                    <div class="">
+                                        <input type="text" name="faculty" id="faculty" autocomplete="faculty"
+                                            class="block w-full rounded-md border border-gray-300 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer"
+                                            x-model="faculty"
+                                            placeholder="FRI/Fakultas Rekayasa Industri"
+                                            >
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <label for="note"
-                                    class="block text-sm font-medium leading-6 text-gray-900">note</label>
-                                <div class="mt-2">
-                                    <textarea id="note" name="note" rows="3"
-                                        class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4"
-                                        placeholder="Raskop less ice"></textarea>
+                                <div>
+                                    <label for="order"
+                                        class="block text-sm font-medium leading-6 text-gray-900 mt-2">Order</label>
+                                    <div class="">
+                                        <input type="text" name="order" id="order" autocomplete="order"
+                                            class="block w-full rounded-md border border-gray-300 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer"
+                                            x-model="order"
+                                            >
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="note"
+                                        class="block text-sm font-medium leading-6 text-gray-900 mt-2">note</label>
+                                    <div class="">
+                                        <textarea id="note" name="note" rows="3"
+                                            class="block w-full rounded-md border border-gray-300 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4"
+                                            placeholder="Raskop less ice"
+                                            x-model="note"
+                                            ></textarea>
+                                    </div>
                                 </div>
                             </div>
                             <button type="submit"
-                                class="w-full text-white bg-[#164138]  focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Reservasi
-                                Now</button>
+                                class="w-full text-white bg-green-main border border-green-main  font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-4 hover:bg-transparent hover:text-green-main hover:scale-95 active:scale-90 transition ease-in">
+                                Reservasi Now
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        <footer class="bg-[#164138] mt-8">
+        {{-- modal end --}}
+        <footer class="bg-green-main mt-8">
             <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
                 <span class="text-sm text-white sm:text-center dark:text-gray-400">© 2023 <a
                         href="https://flowbite.com/" class="hover:underline">Rasa Kopi</a>. All Rights Reserved.
@@ -260,15 +432,276 @@
     </div>
 </body>
 <script>
-    function navData(){ 
+    const loadingConfigToast = {
+        title: 'Please wait...',
+        color: '#164138',
+        position: 'topRight',
+        overlay: true,
+        image: "{{ asset('assets/images/puff.svg') }}",
+        timeout: false,
+        close: false,
+        class: 'loadingrefresh',
+    };
+
+    function navData() {
         return {
             showNav: false
         }
     }
-    function modalData(){
-        return { 
-            showModal: false 
+
+    function Data() {
+        return {
+            showModal: false,
+            selectedRoom: '',
+            roomId: '',
+            name: '',
+            phone: '',
+            faculty: '',
+            order: '',
+            note: '',
+            selectedHour: '',
+            selectedMinute: '',
+            datepickerValue: "",
+            isDateSelected: false,
+            isLoading: false,
+            datepickers() {
+                return {
+                    showDatepicker: false,
+                    month: "",
+                    year: "",
+                    todayMonth: "",
+                    todayYear: "",
+                    no_of_days: [],
+                    startHours: [],
+                    blankdays: [],
+                    initDate() {
+                        let today;
+                        today = new Date();
+                        this.month = today.getMonth();
+                        this.year = today.getFullYear();
+                        this.todayMonth = this.month;
+                        this.todayYear = this.year;
+                        this.datepickerValue = this.formatDateForDisplay(
+                            today
+                        );
+                    },
+                    formatDateForDisplay(date) {
+                        let formattedDay = DAYS[date.getDay()];
+                        let formattedDate = ("0" + date.getDate()).slice(
+                            -2
+                        ); // appends 0 (zero) in single digit date kepake
+                        let formattedMonth = MONTH_NAMES[date.getMonth()];
+                        let formattedMonthShortName =
+                            MONTH_SHORT_NAMES[date.getMonth()];
+                        let formattedMonthInNumber = (
+                            "0" +
+                            (parseInt(date.getMonth()) + 1)
+                        ).slice(-2); //kepake
+                        let formattedYear = date.getFullYear(); //kepake
+                        return `${formattedDate}-${formattedMonthInNumber}-${formattedYear}`; // 02-04-2021
+                    },
+                    isSelectedDate(date) {
+                        const d = new Date(this.year, this.month, date);
+                        return this.datepickerValue ===
+                            this.formatDateForDisplay(d) ?
+                            true :
+                            false;
+                    },
+                    isToday(date) {
+                        const today = new Date();
+                        const d = new Date(this.year, this.month, date);
+                        return today.toDateString() === d.toDateString() ?
+                            true :
+                            false;
+                    },
+                    isDateFutureOrCurrent(date) {
+                        const today = new Date();
+                        const d = new Date(this.year, this.month, date);
+                        return today <= d ? true : false;
+                    },
+                    selectDate(date) {
+                        let selectedDate = new Date(
+                            this.year,
+                            this.month,
+                            date
+                        );
+                        this.datepickerValue = this.formatDateForDisplay(
+                            selectedDate
+                        );
+                        this.isSelectedDate(date);
+                        this.showDatepicker = false;
+                        iziToast.show(loadingConfigToast);
+                        this.isDateSelected = false;
+                        // get schedules
+                        this.getSchedules(this.roomId, this.datepickerValue).then((res) => {
+                            res = res['reserved_times'];
+                            this.startHours = this.getStartHours(res);
+                            console.log('2_start hours: ' + this.startHours)
+                            if(this.startHours.length == 0){
+                                console.log('ruangan penuh')
+                                iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
+                                iziToast.error({
+                                    title: 'Error',
+                                    message: 'Ruangan sudah penuh, silahkan pilih tanggal lain',
+                                    position: 'topRight',
+                                    overlay: false,
+                                    timeout: 3000,
+                                    close: true,
+                                    class: 'error',
+                                });
+                                return;
+                            }
+                            this.selectedHour = this.startHours[0];
+                            this.selectedMinute = '00';
+                            iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
+                            this.isDateSelected = true;
+                        });
+
+                    },
+                    getNoOfDays() {
+                        let daysInMonth = new Date(
+                            this.year,
+                            this.month + 1,
+                            0
+                        ).getDate();
+                        // find where to start calendar day of week
+                        let dayOfWeek = new Date(
+                            this.year,
+                            this.month
+                        ).getDay();
+                        let blankdaysArray = [];
+                        for (var i = 1; i <= dayOfWeek; i++) {
+                            blankdaysArray.push(i);
+                        }
+                        let daysArray = [];
+                        for (var i = 1; i <= daysInMonth; i++) {
+                            daysArray.push(i);
+                        }
+                        this.blankdays = blankdaysArray;
+                        this.no_of_days = daysArray;
+                    },
+                    decrementMonth() {
+                        if (this.month != this.todayMonth || this.year != this.todayYear) {
+                            if (this.month == 0) {
+                                this.year--;
+                                this.month = 12;
+                            }
+                            this.month--;
+                            this.getNoOfDays();
+                        }
+                    },
+                    incrementMonth() {
+                        if (this.month == 11) {
+                            this.month = 0;
+                            this.year++;
+                        } else {
+                            this.month++;
+                        }
+                        this.getNoOfDays();
+                    },
+                    getStartHours(reserved_times) {
+                        let all_hours = [];
+                        for (let i = 10; i < 24; i++) {
+                            let is_reserved = false;
+                            reserved_times.forEach(element => {
+                                console.log("====================================");
+                                let start_time = new Date(`2000-01-01T${element['start_time']}`);
+                                let end_time = element['end_time'].split(":")[0].startsWith("00") ? new Date(`2000-01-02T${element['end_time']}`) : new Date(`2000-01-01T${element['end_time']}`);
+                                console.log("start_time: " + start_time);
+                                console.log("end_time: " + end_time);
+                                let current_time = new Date(`2000-01-01T${i}:00`);
+                                let current_time_plus_3 = new Date(`2000-01-01T${i+3}:00`);
+                                if (start_time <= current_time_plus_3 && current_time_plus_3 < end_time) {
+                                    is_reserved = true;
+                                    console.log('=================')
+                                    console.log(current_time)
+                                    console.log('reserved on +3')
+                                    console.log('reserved on: ' + element['start_time'] + ' - ' + element[
+                                        'end_time'])
+                                    console.log('=================')
+                                }
+                                if (start_time <= current_time && current_time < end_time) {
+                                    is_reserved = true;
+                                    console.log('=================')
+                                    console.log(current_time)
+                                    console.log('reserved on current')
+                                    console.log('reserved on: ' + element['start_time'] + ' - ' + element[
+                                        'end_time'])
+                                    console.log('=================')
+                                }
+                                if (i + 3 > 23) {
+                                    is_reserved = true;
+                                }
+                                console.log("====================================")
+                            });
+                            if (!is_reserved) {
+                                all_hours.push(i);
+                            }
+                        }
+                        console.log('all hours: ' + all_hours)
+                        return all_hours;
+                    },
+                    async getSchedules(room_id, date) {
+                        date = date.split('-').reverse().join('-');
+                        const response = await axios.get(
+                            `http://127.0.0.1:8000/api/rereservations-time-check?room_id=${room_id}&date=${date}`
+                        )
+                        if (response.status == 200) {
+                            return response.data;
+                        }
+                        return false;
+                    },
+                };
+            },
+            async submitModalOrder(){
+                iziToast.show(loadingConfigToast);
+                let response = await axios.post('http://127.0.0.1:8000/api/reservasi',{
+                    nama:this.name,
+                    nomer:this.phone,
+                    fakultas:this.faculty,
+                    pesanan:this.order,
+                    note:this.note,
+                    ruangan:this.roomId,
+                    tanggal:this.datepickerValue,
+                    mulai:this.selectedHour+':'+this.selectedMinute,
+                    selesai:parseInt(this.selectedHour)+3+':'+this.selectedMinute,
+                })
+                if(response.status == 200 && !response.data.error){
+                    iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
+                    iziToast.success({
+                        title: 'Success',
+                        message: response.data.success,
+                        position: 'topRight',
+                        overlay: true,
+                        timeout: 5000,
+                        close: true,
+                        class: 'success',
+                    });
+                    this.showModal = false;
+                    this.name = '';
+                    this.phone = '';
+                    this.faculty = '';
+                    this.order = '';
+                    this.note = '';
+                    this.selectedHour = '';
+                    this.selectedMinute = '';
+                    this.datepickerValue = "";
+                    this.isDateSelected = false;
+                }else{
+                    iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
+                    iziToast.error({
+                        title: 'Error',
+                        message: response.data.error,
+                        position: 'topRight',
+                        overlay: true,
+                        timeout: 5000,
+                        close: true,
+                        class: 'error',
+                    });
+                }
+            }
         }
     }
 </script>
+
 </html>

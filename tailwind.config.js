@@ -8,7 +8,9 @@ export default {
   ],
   theme: {
     extend: {
-      
+      colors:{
+        'green-main':'#164138'
+      }
     },
   },
   plugins: [
