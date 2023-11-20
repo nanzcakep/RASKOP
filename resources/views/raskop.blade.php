@@ -95,37 +95,17 @@
         <div class="container max-w-full mx-auto mt-4">
             <div class="container mx-auto">
                 <div class="px-2 lg:px-1 grid grid-cols-1 xl:grid-cols-2 gap-5 lg:gap-3">
+                    @foreach ($rooms as $ruangan)
                     <div class="grid grid-cols-1">
                         <div
-                            class="bg-[url('http://127.0.0.1:8000/assets/images/DALAM.jpg')] bg-cover bg-center h-[347px] rounded-md shadow-md overflow-hidden">
+                            class="bg-[url('http://127.0.0.1:8000/assets/images/{{ $ruangan->image_url }}')] bg-cover bg-center h-[347px] rounded-md shadow-md overflow-hidden">
                             <div class="w-full h-full pt-60 pl-3 lg:pt-52 lg:pb-3 lg:pl-9 bg-black bg-opacity-30">
                                 <div class="w-[275px] lg:w-full">
-                                    <h1 class="text-white text-4xl font-extrabold">Ruangan Dalam</h1>
+                                    <h1 class="text-white text-4xl font-extrabold">{{ $ruangan->room_name }}</h1>
                                     <button
                                         class="bg-green-main text-white text-center w-full lg:w-1/3 py-1.5 px-5 mt-3 rounded-md border border-green-main hover:bg-transparent hover:text-green-main hover:scale-95 transition duration-300 ease-in-out"
                                         type="button"
-                                        x-on:click="showModal=true;selectedRoom='Ruangan Dalam';roomId=6">Reservasi
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="px-1 lg:px-0  mt-4">
-                            <p class="text-justify"> pertamax dolor sit amet consectetur adipisicing elit. Recusandae
-                                sequi
-                                earum reiciendis voluptatum autem dicta facere nemo tempora, quas nulla a debitis nihil
-                                voluptatem tenetur fugiat sunt atque deserunt ex.</p>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1">
-                        <div
-                            class="bg-[url('http://127.0.0.1:8000/assets/images/LUAR.jpg')] bg-cover bg-center h-[347px] rounded-md shadow-md overflow-hidden">
-                            <div class="w-full h-full pt-60 pl-3 lg:pt-52 lg:pb-3 lg:pl-9 bg-black bg-opacity-30">
-                                <div class="w-[275px] lg:w-full">
-                                    <h1 class="text-white text-4xl font-extrabold">Ruangan Luar</h1>
-                                    <button
-                                        class="bg-green-main text-white text-center w-full lg:w-1/3 py-1.5 px-5 mt-3 rounded-md border border-green-main hover:bg-transparent hover:text-green-main hover:scale-95 transition duration-300 ease-in-out"
-                                        type="button"
-                                        x-on:click="showModal=true;selectedRoom='Ruangan Luar';roomId=5">Reservasi
+                                        x-on:click="showModal=true;selectedRoom='Ruangan Luar';roomId={{ $ruangan->id_room }}">Reservasi
                                     </button>
                                 </div>
                             </div>
@@ -138,7 +118,8 @@
                                 nihil
                                 voluptatem tenetur fugiat sunt atque deserunt ex.</p>
                         </div>
-                    </div>
+                    </div>                    
+                    @endforeach
                 </div>
             </div>
         </div>

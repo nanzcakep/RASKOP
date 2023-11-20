@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
+use App\Models\Room;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,9 @@ Route::get('/tailwind', function () {
 });
 
 Route::get('/raskop', function () {
-    return view('raskop');
+    // query room for get id_room,room_name,capacity, and image_url from database
+    $rooms = Room::select('id_room','room_name','capacity','image_url')->get();
+    return view('raskop',compact('rooms'));
 });
 
 
