@@ -15,7 +15,8 @@ class Customer extends Model
         'phone',
         'faculty',
         'order',
-        'note'
+        'note',
+        'reservation_count'
     ];
 
 }

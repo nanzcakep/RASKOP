@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 
+use App\Models\Room;
 use App\Models\Customer;
 use App\Models\Reservasi;
 use Illuminate\Http\Request;
@@ -18,12 +19,28 @@ class ReservasiController extends Controller
     }
 
     public function addReservasi(Request $request){
+
+        $getRoom = Room::where('id_room',$request->ruangan)->first();
+
+
+        $kapasitasRuangan =  $getRoom->capacity;
         //pelanggan
         $nama = $request->nama;
         $nomer  = $request->nomer;
         $fakultas = $request->fakultas;
         $pesanan = $request->pesanan;
         $note = $request->note;
+        $jumlah = $request->jumlah;
+
+        //Logic reservasi beli
+        preg_match_all('/\d+/', $pesanan, $matches);
+        // Mengonversi angka-angka yang ditemukan menjadi integer dan menjumlahkannya
+        $total_sum_order = array_sum(array_map('intval', $matches[0]));
+      
+
+        $minimOrder = 0.7; //Customer order harus melebihi 70%
+
+        $percentage = $jumlah*$minimOrder;
       
 
 
@@ -71,6 +88,13 @@ class ReservasiController extends Controller
             return response()->json(['error' => 'Room is already reserved for the given date and time.']);
         }
 
+        if($kapasitasRuangan < $jumlah or $percentage > $total_sum_order ) {
+            return response()->json([
+                'error' => 'Gagal melakukan reservasi karena melibihi kapasitas atau pembelian kurang dari 70%'
+            ]);
+        }
+
+
         //RandomAngka
         $characters = '0123456789';
         $randomString = '';
@@ -83,11 +107,12 @@ class ReservasiController extends Controller
 
         //Customers insert
         $customer = Customer::create([
-            'name' => $request->nama,
-            'phone' => $request->nomer,
-            'faculty' => $request->fakultas,
-            'order' => $request->pesanan,
-            'note' => $request->note
+            'name' => $nama,
+            'phone' => $nomer,
+            'faculty' => $fakultas,
+            'order' => $pesanan,
+            'note' => $note,
+            'reservation_count' => $jumlah
         ]);
         
         // Proceed with creating the reservation

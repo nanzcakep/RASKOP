@@ -33,6 +33,7 @@ Route::delete('/ruangan/{slug}', [RoomController::class,'deleteRoom']);
 //Customer Routes
 Route::get('/pelanggan',[CustomerController::class,'getCustomer']);
 Route::post('/pelanggan',[CustomerController::class,'addCustomer']);
+Route::post('/testpelanggan',[CustomerController::class,'testPelanggan']);
 
 
 //Reservasi Routes
