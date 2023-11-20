@@ -124,7 +124,8 @@
                                     <h1 class="text-white text-4xl font-extrabold">Ruangan Luar</h1>
                                     <button
                                         class="bg-green-main text-white text-center w-full lg:w-1/3 py-1.5 px-5 mt-3 rounded-md border border-green-main hover:bg-transparent hover:text-green-main hover:scale-95 transition duration-300 ease-in-out"
-                                        type="button" x-on:click="showModal=true;selectedRoom='Ruangan Luar';roomId=5">Reservasi
+                                        type="button"
+                                        x-on:click="showModal=true;selectedRoom='Ruangan Luar';roomId=5">Reservasi
                                     </button>
                                 </div>
                             </div>
@@ -349,9 +350,8 @@
                                         class="block text-sm font-medium leading-6 text-gray-900 mt-2">Nama</label>
                                     <div class="">
                                         <input type="text" name="name" id="name" autocomplete="name"
-                                        class="block w-full rounded-md border border-gray-300 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer"
-                                        x-model="name"
-                                        >
+                                            class="block w-full rounded-md border border-gray-300 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer"
+                                            x-model="name">
                                     </div>
                                 </div>
                                 <div>
@@ -360,9 +360,8 @@
                                         WhatsApp</label>
                                     <div class="">
                                         <input type="text" name="phone" id="phone" autocomplete="phone"
-                                        class="block w-full rounded-md border border-gray-300 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer"
-                                            x-model="phone"
-                                            placeholder="+62xxxxxx">
+                                            class="block w-full rounded-md border border-gray-300 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer"
+                                            x-model="phone" placeholder="+62xxxxxx">
                                     </div>
                                 </div>
                                 <div>
@@ -371,9 +370,16 @@
                                     <div class="">
                                         <input type="text" name="faculty" id="faculty" autocomplete="faculty"
                                             class="block w-full rounded-md border border-gray-300 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer"
-                                            x-model="faculty"
-                                            placeholder="FRI/Fakultas Rekayasa Industri"
-                                            >
+                                            x-model="faculty" placeholder="FRI/Fakultas Rekayasa Industri">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="totalperson"
+                                        class="block text-sm font-medium leading-6 text-gray-900 mt-2">Jumlah Orang</label>
+                                    <div class="">
+                                        <input type="number" name="totalperson" id="totalperson"
+                                            class="block w-full rounded-md border border-gray-300 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer"
+                                            x-model="totalPerson" placeholder="20">
                                     </div>
                                 </div>
                                 <div>
@@ -382,8 +388,7 @@
                                     <div class="">
                                         <input type="text" name="order" id="order" autocomplete="order"
                                             class="block w-full rounded-md border border-gray-300 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer"
-                                            x-model="order"
-                                            >
+                                            x-model="order">
                                     </div>
                                 </div>
                                 <div>
@@ -392,9 +397,7 @@
                                     <div class="">
                                         <textarea id="note" name="note" rows="3"
                                             class="block w-full rounded-md border border-gray-300 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4"
-                                            placeholder="Raskop less ice"
-                                            x-model="note"
-                                            ></textarea>
+                                            placeholder="Raskop less ice" x-model="note"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -457,6 +460,7 @@
             name: '',
             phone: '',
             faculty: '',
+            totalPerson:'',
             order: '',
             note: '',
             selectedHour: '',
@@ -537,7 +541,7 @@
                             res = res['reserved_times'];
                             this.startHours = this.getStartHours(res);
                             console.log('2_start hours: ' + this.startHours)
-                            if(this.startHours.length == 0){
+                            if (this.startHours.length == 0) {
                                 console.log('ruangan penuh')
                                 iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
                                 iziToast.error({
@@ -606,7 +610,9 @@
                             reserved_times.forEach(element => {
                                 console.log("====================================");
                                 let start_time = new Date(`2000-01-01T${element['start_time']}`);
-                                let end_time = element['end_time'].split(":")[0].startsWith("00") ? new Date(`2000-01-02T${element['end_time']}`) : new Date(`2000-01-01T${element['end_time']}`);
+                                let end_time = element['end_time'].split(":")[0].startsWith("00") ? new Date(
+                                    `2000-01-02T${element['end_time']}`) : new Date(
+                                    `2000-01-01T${element['end_time']}`);
                                 console.log("start_time: " + start_time);
                                 console.log("end_time: " + end_time);
                                 let current_time = new Date(`2000-01-01T${i}:00`);
@@ -629,11 +635,11 @@
                                         'end_time'])
                                     console.log('=================')
                                 }
-                                if (i + 3 > 23) {
-                                    is_reserved = true;
-                                }
                                 console.log("====================================")
                             });
+                            if (i > 20) {
+                                is_reserved = true;
+                            }
                             if (!is_reserved) {
                                 all_hours.push(i);
                             }
@@ -642,52 +648,85 @@
                         return all_hours;
                     },
                     async getSchedules(room_id, date) {
-                        date = date.split('-').reverse().join('-');
-                        const response = await axios.get(
-                            `http://127.0.0.1:8000/api/rereservations-time-check?room_id=${room_id}&date=${date}`
-                        )
-                        if (response.status == 200) {
-                            return response.data;
+                        try {
+                            date = date.split('-').reverse().join('-');
+                            const response = await axios.get(
+                                `http://127.0.0.1:8000/api/rereservations-time-check?room_id=${room_id}&date=${date}`
+                            )
+                            if (response.status == 200) {
+                                return response.data;
+                            }
+                            return false; 
+                        } catch (error) {
+                            return false
                         }
-                        return false;
                     },
                 };
             },
-            async submitModalOrder(){
-                iziToast.show(loadingConfigToast);
-                let response = await axios.post('http://127.0.0.1:8000/api/reservasi',{
-                    nama:this.name,
-                    nomer:this.phone,
-                    fakultas:this.faculty,
-                    pesanan:this.order,
-                    note:this.note,
-                    ruangan:this.roomId,
-                    tanggal:this.datepickerValue,
-                    mulai:this.selectedHour+':'+this.selectedMinute,
-                    selesai:parseInt(this.selectedHour)+3+':'+this.selectedMinute,
-                })
-                if(response.status == 200 && !response.data.error){
-                    iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
-                    iziToast.success({
-                        title: 'Success',
-                        message: response.data.success,
-                        position: 'topRight',
-                        overlay: true,
-                        timeout: 5000,
-                        close: true,
-                        class: 'success',
-                    });
-                    this.showModal = false;
-                    this.name = '';
-                    this.phone = '';
-                    this.faculty = '';
-                    this.order = '';
-                    this.note = '';
-                    this.selectedHour = '';
-                    this.selectedMinute = '';
-                    this.datepickerValue = "";
-                    this.isDateSelected = false;
-                }else{
+            async submitModalOrder() {
+                try {
+                    iziToast.show(loadingConfigToast);
+                    if (this.name == '' || this.phone == '' || this.faculty == '' || this.order == '' || this
+                        .note == '' || this.datepickerValue == '' || this.selectedHour == '' && this
+                        .selectedMinute == '' || this.totalPerson == '') {
+                        iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
+                        iziToast.error({
+                            title: 'Error',
+                            message: 'Harap isi semua form',
+                            position: 'topRight',
+                            overlay: false,
+                            timeout: 5000,
+                            close: true,
+                            class: 'error',
+                        });
+                        return;
+                    }
+                    let response = await axios.post('http://127.0.0.1:8000/api/reservasi', {
+                        nama: this.name,
+                        nomer: this.phone,
+                        fakultas: this.faculty,
+                        pesanan: this.order,
+                        note: this.note,
+                        ruangan: this.roomId,
+                        tanggal: this.datepickerValue,
+                        jumlah: this.totalPerson,
+                        mulai: this.selectedHour + ':' + this.selectedMinute,
+                        selesai: parseInt(this.selectedHour) + 3 + ':' + this.selectedMinute,
+                    })
+                    if (response.status == 200 && !response.data.error) {
+                        iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
+                        iziToast.success({
+                            title: 'Success',
+                            message: response.data.success,
+                            position: 'topRight',
+                            overlay: true,
+                            timeout: 5000,
+                            close: true,
+                            class: 'success',
+                        });
+                        this.showModal = false;
+                        this.name = '';
+                        this.phone = '';
+                        this.faculty = '';
+                        this.order = '';
+                        this.note = '';
+                        this.selectedHour = '';
+                        this.selectedMinute = '';
+                        this.datepickerValue = "";
+                        this.isDateSelected = false;
+                    } else {
+                        iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
+                        iziToast.error({
+                            title: 'Error',
+                            message: response.data.error,
+                            position: 'topRight',
+                            overlay: true,
+                            timeout: 5000,
+                            close: true,
+                            class: 'error',
+                        });
+                    }
+                } catch (error) {
                     iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
                     iziToast.error({
                         title: 'Error',
