@@ -3,9 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RoomController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\ReservasiController;
+use App\Http\Controllers\API\RoomController;
+use App\Http\Controllers\API\CustomerController;
+use App\Http\Controllers\API\ReservasiController;
 
 /*
 |--------------------------------------------------------------------------
