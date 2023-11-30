@@ -1,6 +1,5 @@
 @extends('layouts.mainlayout')
-@section('title','Home')
-    
+@section('title', 'Home')
 @section('content')
     {{-- End Nav --}}
     <div x-data="Data()" x-cloak>
@@ -12,32 +11,38 @@
             style="background: url('/assets/images/bg-logo2.png'); background-color: rgba(0, 0, 0, 0.4); background-blend-mode: multiply; ">
             <div
                 class="absolute inset-0 flex items-center justify-center text-white text-[34px] font-bold font-['DM Sans'] tracking-[3.40px]">
-                <p><span class="bg-[#E08756]">KENANG</span> MASANYA<br><span>SIMPAN <span
-                            class="bg-green-main">RASANYA</span></p>
+                <p><span class="bg-[#E08756]">KENANG</span> MASANYA<br><span>SIMPAN <span class="bg-green-main">RASANYA</span>
+                </p>
             </div>
         </div>
         <div class="container max-w-full mx-auto mt-4">
             <div class="container mx-auto">
                 <div class="px-2 lg:px-1 grid grid-cols-1 xl:grid-cols-2 gap-5 lg:gap-3">
                     @foreach ($rooms as $ruangan)
-                    <div class="grid grid-cols-1">
-                        <div
-                            class="bg-[url('http://127.0.0.1:8000/assets/images/{{ $ruangan->image_url }}')] bg-cover bg-center h-[347px] rounded-md shadow-md overflow-hidden">
-                            <div class="w-full h-full pt-60 pl-3 lg:pt-52 lg:pb-3 lg:pl-9 bg-black bg-opacity-30">
-                                <div class="w-[275px] lg:w-full">
-                                    <h1 class="text-white text-4xl font-extrabold">{{ $ruangan->room_name }}</h1>
-                                    <button
-                                        class="bg-green-main text-white text-center w-full lg:w-1/3 py-1.5 px-5 mt-3 rounded-md border border-green-main hover:bg-transparent hover:text-green-main hover:scale-95 transition duration-300 ease-in-out"
-                                        type="button"
-                                        x-on:click="showModal=true;selectedRoom='Ruangan Luar';roomId={{ $ruangan->id_room }}">Reservasi
-                                    </button>
+                        <div class="grid grid-cols-1">
+                            <div
+                                class="bg-[url('../resources/assets/images/{{$ruangan->image_url }}')] bg-cover bg-center h-[347px] rounded-md shadow-md overflow-hidden"
+                                >
+                                <div class="w-full h-full pt-60 pl-3 lg:pt-52 lg:pb-3 lg:pl-9 bg-black bg-opacity-30">
+                                    <div class="w-[275px] lg:w-full">
+                                        <h1 class="text-white text-4xl font-extrabold">{{ $ruangan->room_name }}</h1>
+                                        <button
+                                            class="bg-green-main text-white text-center w-full lg:w-1/3 py-1.5 px-5 mt-3 rounded-md border border-green-main hover:bg-transparent hover:text-green-main hover:scale-95 transition duration-300 ease-in-out"
+                                            type="button"
+                                            x-on:click="showModal=true;selectedRoom='Ruangan Luar';roomId={{ $ruangan->id_room }}">Reservasi
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="px-1 lg:px-0 mt-4">
+                                <p class="text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                    Recusandae
+                                    sequi
+                                    earum reiciendis voluptatum autem dicta facere nemo tempora, quas nulla a debitis
+                                    nihil
+                                    voluptatem tenetur fugiat sunt atque deserunt ex.</p>
+                            </div>
                         </div>
-                        <div class="px-1 lg:px-0 mt-4">
-                            <p class="text-justify">{{$ruangan->description}}</p>
-                        </div>
-                    </div>                    
                     @endforeach
                 </div>
             </div>
@@ -87,8 +92,8 @@
                     <button type="button" x-on:click="showModal=!showModal;"
                         class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
                         <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
                         <span class="sr-only">Close modal</span>
                     </button>
@@ -103,9 +108,8 @@
                                 </label>
                                 <div class="relative">
                                     <input type="hidden" name="date" x-ref="date" :value="datepickerValue" />
-                                    <input type="text" id="datepicker"
-                                        x-on:click="showDatepicker = !showDatepicker" x-model="datepickerValue"
-                                        x-on:keydown.escape="showDatepicker = false"
+                                    <input type="text" id="datepicker" x-on:click="showDatepicker = !showDatepicker"
+                                        x-model="datepickerValue" x-on:keydown.escape="showDatepicker = false"
                                         class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer"
                                         placeholder="Select date" readonly />
                                     <div class="absolute top-1.5 right-1 cursor-pointer"
@@ -202,8 +206,7 @@
                                                 <select name="starthours"
                                                     class="pl-1 text-lg bg-transparent appearance-none outline-none"
                                                     x-model="selectedHour">
-                                                    <template x-for="(time, index) in startHours"
-                                                        :key="index">
+                                                    <template x-for="(time, index) in startHours" :key="index">
                                                         <option x-model="time" class=""
                                                             x-text="time < 10 ? `0${time}`:time">
                                                         </option>
@@ -310,294 +313,302 @@
                 </div>
             </div>
         </div>
-        {{-- modal end --}}
-        @endsection
-        {{-- Start Footer --}}
-        
-        {{-- End Foooter --}}
     </div>
-</body>
-<script>
-    const loadingConfigToast = {
-        title: 'Please wait...',
-        color: '#164138',
-        position: 'topRight',
-        overlay: true,
-        image: "{{ asset('assets/images/puff.svg') }}",
-        timeout: false,
-        close: false,
-        class: 'loadingrefresh',
-    };
+@endsection
+@section('script')
+    <script>
+        const loadingConfigToast = {
+            title: 'Please wait...',
+            color: '#164138',
+            position: 'topRight',
+            overlay: true,
+            image: "{{ asset('assets/images/puff.svg') }}",
+            timeout: false,
+            close: false,
+            class: 'loadingrefresh',
+        };
 
-    function navData() {
-        return {
-            showNav: false
+        function navData() {
+            return {
+                showNav: false
+            }
         }
-    }
 
-    function Data() {
-        return {
-            showModal: false,
-            selectedRoom: '',
-            roomId: '',
-            name: '',
-            phone: '',
-            faculty: '',
-            totalPerson:'',
-            order: '',
-            note: '',
-            selectedHour: '',
-            selectedMinute: '',
-            datepickerValue: "",
-            isDateSelected: false,
-            isLoading: false,
-            datepickers() {
-                return {
-                    showDatepicker: false,
-                    month: "",
-                    year: "",
-                    todayMonth: "",
-                    todayYear: "",
-                    no_of_days: [],
-                    startHours: [],
-                    blankdays: [],
-                    initDate() {
-                        let today;
-                        today = new Date();
-                        this.month = today.getMonth();
-                        this.year = today.getFullYear();
-                        this.todayMonth = this.month;
-                        this.todayYear = this.year;
-                        this.datepickerValue = this.formatDateForDisplay(
-                            today
-                        );
-                    },
-                    formatDateForDisplay(date) {
-                        let formattedDay = DAYS[date.getDay()];
-                        let formattedDate = ("0" + date.getDate()).slice(
-                            -2
-                        ); // appends 0 (zero) in single digit date kepake
-                        let formattedMonth = MONTH_NAMES[date.getMonth()];
-                        let formattedMonthShortName =
-                            MONTH_SHORT_NAMES[date.getMonth()];
-                        let formattedMonthInNumber = (
-                            "0" +
-                            (parseInt(date.getMonth()) + 1)
-                        ).slice(-2); //kepake
-                        let formattedYear = date.getFullYear(); //kepake
-                        return `${formattedDate}-${formattedMonthInNumber}-${formattedYear}`; // 02-04-2021
-                    },
-                    isSelectedDate(date) {
-                        const d = new Date(this.year, this.month, date);
-                        return this.datepickerValue ===
-                            this.formatDateForDisplay(d) ?
-                            true :
-                            false;
-                    },
-                    isToday(date) {
-                        const today = new Date();
-                        const d = new Date(this.year, this.month, date);
-                        return today.toDateString() === d.toDateString() ?
-                            true :
-                            false;
-                    },
-                    isDateFutureOrCurrent(date) {
-                        const today = new Date();
-                        const d = new Date(this.year, this.month, date);
-                        return today <= d ? true : false;
-                    },
-                    selectDate(date) {
-                        let selectedDate = new Date(
-                            this.year,
-                            this.month,
-                            date
-                        );
-                        this.datepickerValue = this.formatDateForDisplay(
-                            selectedDate
-                        );
-                        this.isSelectedDate(date);
-                        this.showDatepicker = false;
-                        iziToast.show(loadingConfigToast);
-                        this.isDateSelected = false;
-                        // get schedules
-                        this.getSchedules(this.roomId, this.datepickerValue).then((res) => {
-                            res = res['reserved_times'];
-                            this.startHours = this.getStartHours(res);
-                            console.log('2_start hours: ' + this.startHours)
-                            if (this.startHours.length == 0) {
-                                console.log('ruangan penuh')
+        function Data() {
+            return {
+                showModal: false,
+                selectedRoom: '',
+                roomId: '',
+                name: '',
+                phone: '',
+                faculty: '',
+                totalPerson: '',
+                order: '',
+                note: '',
+                selectedHour: '',
+                selectedMinute: '',
+                datepickerValue: "",
+                isDateSelected: false,
+                isLoading: false,
+                datepickers() {
+                    return {
+                        showDatepicker: false,
+                        month: "",
+                        year: "",
+                        todayMonth: "",
+                        todayYear: "",
+                        no_of_days: [],
+                        startHours: [],
+                        blankdays: [],
+                        initDate() {
+                            let today;
+                            today = new Date();
+                            this.month = today.getMonth();
+                            this.year = today.getFullYear();
+                            this.todayMonth = this.month;
+                            this.todayYear = this.year;
+                            this.datepickerValue = this.formatDateForDisplay(
+                                today
+                            );
+                        },
+                        formatDateForDisplay(date) {
+                            let formattedDay = DAYS[date.getDay()];
+                            let formattedDate = ("0" + date.getDate()).slice(
+                                -2
+                            ); // appends 0 (zero) in single digit date kepake
+                            let formattedMonth = MONTH_NAMES[date.getMonth()];
+                            let formattedMonthShortName =
+                                MONTH_SHORT_NAMES[date.getMonth()];
+                            let formattedMonthInNumber = (
+                                "0" +
+                                (parseInt(date.getMonth()) + 1)
+                            ).slice(-2); //kepake
+                            let formattedYear = date.getFullYear(); //kepake
+                            return `${formattedDate}-${formattedMonthInNumber}-${formattedYear}`; // 02-04-2021
+                        },
+                        isSelectedDate(date) {
+                            const d = new Date(this.year, this.month, date);
+                            return this.datepickerValue ===
+                                this.formatDateForDisplay(d) ?
+                                true :
+                                false;
+                        },
+                        isToday(date) {
+                            const today = new Date();
+                            const d = new Date(this.year, this.month, date);
+                            return today.toDateString() === d.toDateString() ?
+                                true :
+                                false;
+                        },
+                        isDateFutureOrCurrent(date) {
+                            const today = new Date();
+                            const d = new Date(this.year, this.month, date);
+                            return today <= d ? true : false;
+                        },
+                        selectDate(date) {
+                            let selectedDate = new Date(
+                                this.year,
+                                this.month,
+                                date
+                            );
+                            this.datepickerValue = this.formatDateForDisplay(
+                                selectedDate
+                            );
+                            this.isSelectedDate(date);
+                            this.showDatepicker = false;
+                            iziToast.show(loadingConfigToast);
+                            this.isDateSelected = false;
+                            // get schedules
+                            this.getSchedules(this.roomId, this.datepickerValue).then((res) => {
+                                res = res['reserved_times'];
+                                this.startHours = this.getStartHours(res);
+                                console.log('2_start hours: ' + this.startHours)
+                                if (this.startHours.length == 0) {
+                                    console.log('ruangan penuh')
+                                    iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
+                                    iziToast.error({
+                                        title: 'Error',
+                                        message: 'Ruangan sudah penuh, silahkan pilih tanggal lain',
+                                        position: 'topRight',
+                                        overlay: false,
+                                        timeout: 3000,
+                                        close: true,
+                                        class: 'error',
+                                    });
+                                    return;
+                                }
+                                this.selectedHour = this.startHours[0];
+                                this.selectedMinute = '00';
                                 iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
-                                iziToast.error({
-                                    title: 'Error',
-                                    message: 'Ruangan sudah penuh, silahkan pilih tanggal lain',
-                                    position: 'topRight',
-                                    overlay: false,
-                                    timeout: 3000,
-                                    close: true,
-                                    class: 'error',
-                                });
-                                return;
-                            }
-                            this.selectedHour = this.startHours[0];
-                            this.selectedMinute = '00';
-                            iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
-                            this.isDateSelected = true;
-                        });
-
-                    },
-                    getNoOfDays() {
-                        let daysInMonth = new Date(
-                            this.year,
-                            this.month + 1,
-                            0
-                        ).getDate();
-                        // find where to start calendar day of week
-                        let dayOfWeek = new Date(
-                            this.year,
-                            this.month
-                        ).getDay();
-                        let blankdaysArray = [];
-                        for (var i = 1; i <= dayOfWeek; i++) {
-                            blankdaysArray.push(i);
-                        }
-                        let daysArray = [];
-                        for (var i = 1; i <= daysInMonth; i++) {
-                            daysArray.push(i);
-                        }
-                        this.blankdays = blankdaysArray;
-                        this.no_of_days = daysArray;
-                    },
-                    decrementMonth() {
-                        if (this.month != this.todayMonth || this.year != this.todayYear) {
-                            if (this.month == 0) {
-                                this.year--;
-                                this.month = 12;
-                            }
-                            this.month--;
-                            this.getNoOfDays();
-                        }
-                    },
-                    incrementMonth() {
-                        if (this.month == 11) {
-                            this.month = 0;
-                            this.year++;
-                        } else {
-                            this.month++;
-                        }
-                        this.getNoOfDays();
-                    },
-                    getStartHours(reserved_times) {
-                        let all_hours = [];
-                        for (let i = 10; i < 24; i++) {
-                            let is_reserved = false;
-                            reserved_times.forEach(element => {
-                                console.log("====================================");
-                                let start_time = new Date(`2000-01-01T${element['start_time']}`);
-                                let end_time = element['end_time'].split(":")[0].startsWith("00") ? new Date(
-                                    `2000-01-02T${element['end_time']}`) : new Date(
-                                    `2000-01-01T${element['end_time']}`);
-                                console.log("start_time: " + start_time);
-                                console.log("end_time: " + end_time);
-                                let current_time = new Date(`2000-01-01T${i}:00`);
-                                let current_time_plus_3 = new Date(`2000-01-01T${i+3}:00`);
-                                if (start_time <= current_time_plus_3 && current_time_plus_3 < end_time) {
-                                    is_reserved = true;
-                                    console.log('=================')
-                                    console.log(current_time)
-                                    console.log('reserved on +3')
-                                    console.log('reserved on: ' + element['start_time'] + ' - ' + element[
-                                        'end_time'])
-                                    console.log('=================')
-                                }
-                                if (start_time <= current_time && current_time < end_time) {
-                                    is_reserved = true;
-                                    console.log('=================')
-                                    console.log(current_time)
-                                    console.log('reserved on current')
-                                    console.log('reserved on: ' + element['start_time'] + ' - ' + element[
-                                        'end_time'])
-                                    console.log('=================')
-                                }
-                                console.log("====================================")
+                                this.isDateSelected = true;
                             });
-                            if (i > 20) {
-                                is_reserved = true;
+
+                        },
+                        getNoOfDays() {
+                            let daysInMonth = new Date(
+                                this.year,
+                                this.month + 1,
+                                0
+                            ).getDate();
+                            // find where to start calendar day of week
+                            let dayOfWeek = new Date(
+                                this.year,
+                                this.month
+                            ).getDay();
+                            let blankdaysArray = [];
+                            for (var i = 1; i <= dayOfWeek; i++) {
+                                blankdaysArray.push(i);
                             }
-                            if (!is_reserved) {
-                                all_hours.push(i);
+                            let daysArray = [];
+                            for (var i = 1; i <= daysInMonth; i++) {
+                                daysArray.push(i);
                             }
+                            this.blankdays = blankdaysArray;
+                            this.no_of_days = daysArray;
+                        },
+                        decrementMonth() {
+                            if (this.month != this.todayMonth || this.year != this.todayYear) {
+                                if (this.month == 0) {
+                                    this.year--;
+                                    this.month = 12;
+                                }
+                                this.month--;
+                                this.getNoOfDays();
+                            }
+                        },
+                        incrementMonth() {
+                            if (this.month == 11) {
+                                this.month = 0;
+                                this.year++;
+                            } else {
+                                this.month++;
+                            }
+                            this.getNoOfDays();
+                        },
+                        getStartHours(reserved_times) {
+                            let all_hours = [];
+                            for (let i = 10; i < 24; i++) {
+                                let is_reserved = false;
+                                reserved_times.forEach(element => {
+                                    console.log("====================================");
+                                    let start_time = new Date(`2000-01-01T${element['start_time']}`);
+                                    let end_time = element['end_time'].split(":")[0].startsWith("00") ? new Date(
+                                        `2000-01-02T${element['end_time']}`) : new Date(
+                                        `2000-01-01T${element['end_time']}`);
+                                    console.log("start_time: " + start_time);
+                                    console.log("end_time: " + end_time);
+                                    let current_time = new Date(`2000-01-01T${i}:00`);
+                                    let current_time_plus_3 = new Date(`2000-01-01T${i+3}:00`);
+                                    if (start_time <= current_time_plus_3 && current_time_plus_3 < end_time) {
+                                        is_reserved = true;
+                                        console.log('=================')
+                                        console.log(current_time)
+                                        console.log('reserved on +3')
+                                        console.log('reserved on: ' + element['start_time'] + ' - ' + element[
+                                            'end_time'])
+                                        console.log('=================')
+                                    }
+                                    if (start_time <= current_time && current_time < end_time) {
+                                        is_reserved = true;
+                                        console.log('=================')
+                                        console.log(current_time)
+                                        console.log('reserved on current')
+                                        console.log('reserved on: ' + element['start_time'] + ' - ' + element[
+                                            'end_time'])
+                                        console.log('=================')
+                                    }
+                                    console.log("====================================")
+                                });
+                                if (i > 20) {
+                                    is_reserved = true;
+                                }
+                                if (!is_reserved) {
+                                    all_hours.push(i);
+                                }
+                            }
+                            console.log('all hours: ' + all_hours)
+                            return all_hours;
+                        },
+                        async getSchedules(room_id, date) {
+                            try {
+                                date = date.split('-').reverse().join('-');
+                                const response = await axios.get(
+                                    `http://127.0.0.1:8000/api/rereservations-time-check?room_id=${room_id}&date=${date}`
+                                )
+                                if (response.status == 200) {
+                                    return response.data;
+                                }
+                                return false;
+                            } catch (error) {
+                                return false
+                            }
+                        },
+                    };
+                },
+                async submitModalOrder() {
+                    try {
+                        iziToast.show(loadingConfigToast);
+                        if (this.name == '' || this.phone == '' || this.faculty == '' || this.order == '' || this
+                            .note == '' || this.datepickerValue == '' || this.selectedHour == '' && this
+                            .selectedMinute == '' || this.totalPerson == '') {
+                            iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
+                            iziToast.error({
+                                title: 'Error',
+                                message: 'Harap isi semua form',
+                                position: 'topRight',
+                                overlay: false,
+                                timeout: 5000,
+                                close: true,
+                                class: 'error',
+                            });
+                            return;
                         }
-                        console.log('all hours: ' + all_hours)
-                        return all_hours;
-                    },
-                    async getSchedules(room_id, date) {
-                        try {
-                            date = date.split('-').reverse().join('-');
-                            const response = await axios.get(
-                                `http://127.0.0.1:8000/api/rereservations-time-check?room_id=${room_id}&date=${date}`
-                            )
-                            if (response.status == 200) {
-                                return response.data;
-                            }
-                            return false; 
-                        } catch (error) {
-                            return false
+                        let response = await axios.post('http://127.0.0.1:8000/api/reservasi', {
+                            nama: this.name,
+                            nomer: this.phone,
+                            fakultas: this.faculty,
+                            pesanan: this.order,
+                            note: this.note,
+                            ruangan: this.roomId,
+                            tanggal: this.datepickerValue,
+                            jumlah: this.totalPerson,
+                            mulai: this.selectedHour + ':' + this.selectedMinute,
+                            selesai: parseInt(this.selectedHour) + 3 + ':' + this.selectedMinute,
+                        })
+                        if (response.status == 200 && !response.data.error) {
+                            iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
+                            iziToast.success({
+                                title: 'Success',
+                                message: response.data.success,
+                                position: 'topRight',
+                                overlay: true,
+                                timeout: 5000,
+                                close: true,
+                                class: 'success',
+                            });
+                            this.showModal = false;
+                            this.name = '';
+                            this.phone = '';
+                            this.faculty = '';
+                            this.order = '';
+                            this.note = '';
+                            this.selectedHour = '';
+                            this.selectedMinute = '';
+                            this.datepickerValue = "";
+                            this.isDateSelected = false;
+                        } else {
+                            iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
+                            iziToast.error({
+                                title: 'Error',
+                                message: response.data.error,
+                                position: 'topRight',
+                                overlay: true,
+                                timeout: 5000,
+                                close: true,
+                                class: 'error',
+                            });
                         }
-                    },
-                };
-            },
-            async submitModalOrder() {
-                try {
-                    iziToast.show(loadingConfigToast);
-                    if (this.name == '' || this.phone == '' || this.faculty == '' || this.order == '' || this
-                        .note == '' || this.datepickerValue == '' || this.selectedHour == '' && this
-                        .selectedMinute == '' || this.totalPerson == '') {
-                        iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
-                        iziToast.error({
-                            title: 'Error',
-                            message: 'Harap isi semua form',
-                            position: 'topRight',
-                            overlay: false,
-                            timeout: 5000,
-                            close: true,
-                            class: 'error',
-                        });
-                        return;
-                    }
-                    let response = await axios.post('http://127.0.0.1:8000/api/reservasi', {
-                        nama: this.name,
-                        nomer: this.phone,
-                        fakultas: this.faculty,
-                        pesanan: this.order,
-                        note: this.note,
-                        ruangan: this.roomId,
-                        tanggal: this.datepickerValue,
-                        jumlah: this.totalPerson,
-                        mulai: this.selectedHour + ':' + this.selectedMinute,
-                        selesai: parseInt(this.selectedHour) + 3 + ':' + this.selectedMinute,
-                    })
-                    if (response.status == 200 && !response.data.error) {
-                        iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
-                        iziToast.success({
-                            title: 'Success',
-                            message: response.data.success,
-                            position: 'topRight',
-                            overlay: true,
-                            timeout: 5000,
-                            close: true,
-                            class: 'success',
-                        });
-                        this.showModal = false;
-                        this.name = '';
-                        this.phone = '';
-                        this.faculty = '';
-                        this.order = '';
-                        this.note = '';
-                        this.selectedHour = '';
-                        this.selectedMinute = '';
-                        this.datepickerValue = "";
-                        this.isDateSelected = false;
-                    } else {
+                    } catch (error) {
                         iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
                         iziToast.error({
                             title: 'Error',
@@ -609,21 +620,8 @@
                             class: 'error',
                         });
                     }
-                } catch (error) {
-                    iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
-                    iziToast.error({
-                        title: 'Error',
-                        message: response.data.error,
-                        position: 'topRight',
-                        overlay: true,
-                        timeout: 5000,
-                        close: true,
-                        class: 'error',
-                    });
                 }
             }
         }
-    }
-</script>
-
-</html>
+    </script>
+@endsection

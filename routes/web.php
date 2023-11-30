@@ -30,7 +30,7 @@ Route::get('/raskop', function () {
     // query room for get id_room,room_name,capacity, and image_url from database
     $rooms = Room::select('id_room','room_name','capacity','description','image_url')->get();
     return view('raskop',compact('rooms'));
-});
+})->name('home');
 
 Route::get('/reservasi', [ReservasiController::class,'index']);
 
