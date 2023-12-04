@@ -50,6 +50,7 @@ return [
             'api_secret' => env('CLOUDINARY_API_SECRET'),
             'url' => [
                 'secure' => (bool) env('CLOUDINARY_SECURE_URL', true),
+                'url' => env('CLOUDINARY_URL'),
             ],
         ],
         's3' => [

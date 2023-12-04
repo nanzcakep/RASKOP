@@ -128,7 +128,7 @@
     };
     function reservasiData(){
         return {
-            showModal:true,
+            showModal:false,
             searchReservasi:'',
             kodeReservasi:'',
             tanggalReservasi:'',

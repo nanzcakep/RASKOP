@@ -32,7 +32,7 @@ Route::get('/raskop', function () {
     return view('raskop',compact('rooms'));
 })->name('home');
 
-Route::get('/reservasi', [ReservasiController::class,'index']);
+Route::get('/reservasi', [ReservasiController::class,'index'])->name('reservasi');
 
 
 

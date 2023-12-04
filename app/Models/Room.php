@@ -34,6 +34,12 @@ class Room extends Model
         });
     }
 
+    public function getImage(){
+        $image_ext = explode('.', $this->image_url);
+        $image_ext = end($image_ext);
+        return env('CLOUDINARY_URL').$this->image_url.'.'.$image_ext;
+    }
+
 
 
 }

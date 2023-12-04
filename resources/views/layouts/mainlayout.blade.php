@@ -4,13 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @vite('resources/css/app.css')
+    @vite('resources/js/app.js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"
         integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css"
         integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>Ruangan</title>
 </head>
 <script>
@@ -20,7 +21,6 @@
     }
     }
 </script>
-@yield('script')
 <body class="no-scrollbar">
     {{-- Start Nav --}}
     <nav class="bg-green-main" x-data="navData()" x-cloak>
@@ -54,10 +54,16 @@
                     <div class="hidden sm:ml-6 sm:block">
                         <div class="flex space-x-4">
                             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                            <a href="{{ route('home') }}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
-                                aria-current="page">Home</a>
-                            <a href="/reservasi"
-                                class="text-white hover:bg-white-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Reservasi</a>
+                            <a href="{{ route('home') }}" 
+                            class="{{ request()->is('raskop') ? 'bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium' : 'text-white hover:bg-white-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium' }}"
+                            >
+                            Home
+                            </a>
+                            <a href="{{ route('reservasi') }}"
+                            class="{{ request()->is('reservasi') ? 'bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium' : 'text-white hover:bg-white-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium' }}"
+                            >
+                                Reservasi
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -83,7 +89,8 @@
         </div>
     </nav>
     @yield('content')
-    <footer class="bg-green-main mt-8">
+    @yield('script')
+    <footer class="mt-8 bg-green-main h-full">
         <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
             <span class="text-sm text-white sm:text-center dark:text-gray-400">© 2023 <a
                     href="https://flowbite.com/" class="hover:underline">Rasa Kopi</a>. All Rights Reserved.

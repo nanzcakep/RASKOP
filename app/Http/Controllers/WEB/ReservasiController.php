@@ -9,6 +9,6 @@ use Illuminate\Http\Request;
 class ReservasiController extends Controller
 {
     public function index(){
-        return view('reservasi');
+        return view('reservasii');
     }
 }

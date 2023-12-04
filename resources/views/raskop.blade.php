@@ -20,9 +20,8 @@
                 <div class="px-2 lg:px-1 grid grid-cols-1 xl:grid-cols-2 gap-5 lg:gap-3">
                     @foreach ($rooms as $ruangan)
                         <div class="grid grid-cols-1">
-                            <div
-                                class="bg-[url('../resources/assets/images/{{$ruangan->image_url }}')] bg-cover bg-center h-[347px] rounded-md shadow-md overflow-hidden"
-                                >
+                            <div class="bg-cover bg-center h-[347px] rounded-md shadow-md overflow-hidden"
+                                style="background-image:url('{{ $ruangan->getImage() }}')">
                                 <div class="w-full h-full pt-60 pl-3 lg:pt-52 lg:pb-3 lg:pl-9 bg-black bg-opacity-30">
                                     <div class="w-[275px] lg:w-full">
                                         <h1 class="text-white text-4xl font-extrabold">{{ $ruangan->room_name }}</h1>
@@ -35,12 +34,7 @@
                                 </div>
                             </div>
                             <div class="px-1 lg:px-0 mt-4">
-                                <p class="text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                    Recusandae
-                                    sequi
-                                    earum reiciendis voluptatum autem dicta facere nemo tempora, quas nulla a debitis
-                                    nihil
-                                    voluptatem tenetur fugiat sunt atque deserunt ex.</p>
+                                <p class="text-justify">{{ $ruangan->description }}</p>
                             </div>
                         </div>
                     @endforeach
@@ -201,12 +195,13 @@
                                             Jam Mulai
                                         </label>
                                         <div
-                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer">
+                                            class="block w-full rounded-md  py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-4 cursor-pointer">
                                             <div class="flex">
                                                 <select name="starthours"
-                                                    class="pl-1 text-lg bg-transparent appearance-none outline-none"
+                                                    class="text-lg bg-transparent appearance-none outline-none"
                                                     x-model="selectedHour">
-                                                    <template x-for="(time, index) in startHours" :key="index">
+                                                    <template x-for="(time, index) in startHours"
+                                                        :key="index">
                                                         <option x-model="time" class=""
                                                             x-text="time < 10 ? `0${time}`:time">
                                                         </option>

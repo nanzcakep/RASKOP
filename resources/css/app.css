@@ -7,6 +7,13 @@
     display: none;
 }
 
+select {
+    /* for Firefox */
+    -moz-appearance: none;
+    /* for Chrome */
+    -webkit-appearance: none;
+  }
+
 .loader {
         border-top-color: #3498db;
         -webkit-animation: spinner 1s linear infinite;
