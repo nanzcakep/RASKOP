@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\WEB\ReservasiController;
+use App\Livewire\WhatsappDashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +19,17 @@ use App\Http\Controllers\WEB\ReservasiController;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
+Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return view('index');
+    });
+    Route::get('/whatsapp',WhatsappDashboard::class)->name('whatsapp');
 });
+
+
+Route::get('/login',function(){
+    return redirect()->route('home');
+})->name('login');
 
 Route::get('/tailwind', function () {
     return view('tailwindtest');

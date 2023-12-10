@@ -362,9 +362,9 @@
                             this.year = today.getFullYear();
                             this.todayMonth = this.month;
                             this.todayYear = this.year;
-                            this.datepickerValue = this.formatDateForDisplay(
-                                today
-                            );
+                            // this.datepickerValue = this.formatDateForDisplay(
+                            //     today
+                            // );
                         },
                         formatDateForDisplay(date) {
                             let formattedDay = DAYS[date.getDay()];
@@ -528,7 +528,7 @@
                             try {
                                 date = date.split('-').reverse().join('-');
                                 const response = await axios.get(
-                                    `http://127.0.0.1:8000/api/rereservations-time-check?room_id=${room_id}&date=${date}`
+                                    `{{ env('ASSET_URL') }}/api/rereservations-time-check?room_id=${room_id}&date=${date}`
                                 )
                                 if (response.status == 200) {
                                     return response.data;
@@ -558,7 +558,7 @@
                             });
                             return;
                         }
-                        let response = await axios.post('http://127.0.0.1:8000/api/reservasi', {
+                        let response = await axios.post('{{ env('ASSET_URL') }}/api/reservasi', {
                             nama: this.name,
                             nomer: this.phone,
                             fakultas: this.faculty,
@@ -572,6 +572,8 @@
                         })
                         if (response.status == 200 && !response.data.error) {
                             iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
+                            navigator.clipboard.writeText(response.data.kode_reservasi);
+                            console.log(response.data.kode_reservasi)
                             iziToast.success({
                                 title: 'Success',
                                 message: response.data.success,

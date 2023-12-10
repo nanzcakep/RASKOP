@@ -6,7 +6,7 @@
 @section('content')
     <div x-data="reservasiData()" x-cloak>
         <div class="container max-w-sm sm:max-w-sm md:max-w-md xl:max-w-5xl h-screen mx-auto">
-            <div class="pt-48 pb-10 px-2 sm:px-0 flex flex-col space-y-7 items-center justify-center font-sans">
+            <div class="py-10 sm:pt-48 sm:pb-10 px-2 sm:px-0 flex flex-col space-y-7 items-center justify-center font-sans">
                 <h1 class="text-2xl text-black">Hai Kamu,<span class="block md:inline text-4xl font-extrabold">Cek Reservasi
                         Kamu disini!</span></h1>
                 <form action="" 
@@ -57,7 +57,7 @@
                         <div class="flex justify-between">
                             <h4 class="text-black text-2xl font-bold">#<span x-text="kodeReservasi.toUpperCase()"></span>
                             </h4>
-                            <div :class="`bg-${color}-300 text-${color}-500`" class="font-bold rounded-lg py-2 px-4">
+                            <div :class="bgColor? `bg-${bgColor} text-${txtColor} font-bold rounded-lg py-2 px-4` : 'font-bold rounded-lg py-2 px-4'">
                                 <span x-text="statusReservasi"></span>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
     <script>
         const loadingConfigToast = {
             title: 'Please wait...',
-            color: 'teal',
+            color: '#164138',
             position: 'topRight',
             overlay: true,
             image: "{{ asset('assets/images/puff.svg') }}",
@@ -92,7 +92,8 @@
         function reservasiData() {
             return {
                 showModal: false,
-                color: '',
+                bgColor: '',
+                txtColor:'',
                 searchReservasi: '',
                 kodeReservasi: '',
                 tanggalReservasi: '',
@@ -110,12 +111,12 @@
                             message: 'Kode reservasi tidak boleh kosong',
                             position: 'topRight'
                         });
-                        return
+                        return;
                     }
                     try {
                         iziToast.show(loadingConfigToast);
                         let response = await axios.get(
-                            `http://127.0.0.1:8000/api/cek-reservasi?kode=${this.searchReservasi}`)
+                            `{{ env('ASSET_URL') }}/api/cek-reservasi?kode=${this.searchReservasi}`)
                         let responseJson = response.data
                         console.log(response)
                         if (responseJson.data) {
@@ -123,7 +124,9 @@
                             let splitTanggal = dataReservasi.tanggal.split('-')
                             this.kodeReservasi = dataReservasi.kode_reservasi
                             this.tanggalReservasi = splitTanggal[splitTanggal.length - 1]
-                            this.bulanReservasi = MONTH_SHORT_NAMES[parseInt(splitTanggal[1])]
+                            console.log(splitTanggal)
+                            this.bulanReservasi = MONTH_SHORT_NAMES[parseInt(splitTanggal[1])-1]
+                            console.log(this.bulanReservasi)
                             let jamMulai = dataReservasi.jam_mulai.split(':')
                             this.jamMulaiReservasi = `${jamMulai[0]}.${jamMulai[1]}`
                             let jamSelesai = dataReservasi.jam_selesai.split(':')
@@ -132,11 +135,14 @@
                             this.ruanganReservasi = dataReservasi.ruangan.nama_ruangan
                             this.customerReservasi = dataReservasi.pelanggan.nama
                             if (dataReservasi.status == 'pending') {
-                                this.color = 'amber'
+                                this.bgColor = 'amber-300'
+                                this.txtColor = 'amber-500'
                             } else if (dataReservasi.status == 'approved') {
-                                this.color = 'teal'
+                                this.bgColor = 'teal-300'
+                                this.txtColor = 'teal-500'
                             } else if (dataReservasi.status == 'rejected') {
-                                this.color = 'red'
+                                this.bgColor = 'red-300'
+                                this.txtColor = 'red-500'
                             }
                             this.showModal = true
                             iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
@@ -156,7 +162,6 @@
 
                     } catch (xhr) {
                         let response = xhr.response
-                        console.log(xhr)
                         iziToast.hide({}, document.getElementsByClassName('loadingrefresh')[0])
                         iziToast.error({
                             title: 'Error',

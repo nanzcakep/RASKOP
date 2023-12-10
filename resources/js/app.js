@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Alpine from 'alpinejs';
+import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
 const MONTH_NAMES = [
     "January",
     "February",
@@ -34,5 +34,4 @@ window.MONTH_NAMES = MONTH_NAMES;
 window.MONTH_SHORT_NAMES = MONTH_SHORT_NAMES;
 window.DAYS = DAYS;
 window.axios= axios;
-window.Alpine = Alpine;
-Alpine.start();
+Livewire.start();

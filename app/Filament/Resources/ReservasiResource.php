@@ -66,7 +66,8 @@ class ReservasiResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('kode_reservasi'),
-                TextColumn::make('tanggal')->dateTime('j F Y'),
+                TextColumn::make('tanggal')->dateTime('j F Y')
+                ->sortable(),
                 TextColumn::make('jam_mulai')->dateTime('H:i'),
                 TextColumn::make('jam_selesai')->dateTime('H:i'), 
                 TextColumn::make('status')

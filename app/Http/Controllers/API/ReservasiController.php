@@ -127,7 +127,7 @@ class ReservasiController extends Controller
         ]);
         
         // Return a success response or perform any additional actions
-        return response()->json(['success' => 'Reservation created successfully. Code '.$reservasi->kode_reservasi]);
+        return response()->json(['success' => 'Reservasi telah terbuat dengan Code '.$reservasi->kode_reservasi.' dan code berhasil dicopy', 'kode_reservasi' => $reservasi->kode_reservasi]);
         
     }
 

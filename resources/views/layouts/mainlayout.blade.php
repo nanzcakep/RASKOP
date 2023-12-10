@@ -4,15 +4,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @livewireStyles
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
+    @livewireScriptConfig
+    @yield('scriptsrc')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"
         integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css"
         integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Ruangan</title>
+    <title>@yield('title','')</title>
 </head>
 <script>
     function navData() {
@@ -79,11 +82,11 @@
             x-transition:leave-end="opacity-0 transform scale-90">
             <div class="space-y-1 px-2 pb-3 pt-2">
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                <a href=""
-                    class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium">Home
+                <a href="{{ route('home') }}"
+                    class="{{ request()->is('raskop') ? 'bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium' : 'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium' }}">Home
                 </a>
-                <a href="/reservasi"
-                    class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reservasi
+                <a href="{{ route('reservasi') }}"
+                class="{{ request()->is('reservasi') ? 'bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium' : 'text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium' }}">Reservasi
                 </a>
             </div>
         </div>
