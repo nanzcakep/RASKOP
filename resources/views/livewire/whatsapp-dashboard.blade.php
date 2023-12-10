@@ -293,7 +293,7 @@
                     qrCode: '',
                     socket: null,
                     initSocket() {
-                        const socket = io('http://localhost:8541')
+                        const socket = io('https://waraskop-ca63b0139ab7.herokuapp.com/')
                         socket.on('connected', () => {
                             this.socket = socket
                             console.log('connected')

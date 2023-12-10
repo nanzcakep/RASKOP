@@ -12,5 +12,7 @@ class Whatsapp extends Model
     protected $fillable = [
         'access_token',
         'device_name',
+        'email',
+        'password',
     ];
 }

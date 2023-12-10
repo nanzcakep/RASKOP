@@ -46,7 +46,7 @@ class WhatsappDashboard extends Component
         try{
             $client = new Client();
             $accessToken = Whatsapp::first()->access_token;
-            $response = $client->request('POST','http://localhost:8541/api/update-password',[
+            $response = $client->request('POST','https://waraskop-ca63b0139ab7.herokuapp.com/api/update-password',[
                 'headers' => [
                     'x-access-token' => $accessToken,
                 ],
@@ -57,6 +57,9 @@ class WhatsappDashboard extends Component
             ]);
             $response = json_decode($response->getBody()->getContents());
             if($response->status){
+                $whatsappInstance = Whatsapp::first();
+                $whatsappInstance->password = $this->newPassword;
+                $whatsappInstance->save();
                 return true;
             }
             return false;
@@ -95,7 +98,7 @@ class WhatsappDashboard extends Component
         try{
             $client = new Client();
             $accessToken = Whatsapp::first()->access_token;
-            $response = $client->request('POST','http://localhost:8541/api/delete-instance',[
+            $response = $client->request('POST','https://waraskop-ca63b0139ab7.herokuapp.com/api/delete-instance',[
                 'headers' => [
                     'x-access-token' => $accessToken,
                 ],
@@ -135,7 +138,7 @@ class WhatsappDashboard extends Component
       try{
             $client = new Client();
             $accessToken = Whatsapp::first()->access_token;
-            $response = $client->request('POST','http://localhost:8541/api/create-instance',[
+            $response = $client->request('POST','https://waraskop-ca63b0139ab7.herokuapp.com/api/create-instance',[
                 'headers' => [
                     'x-access-token' => $accessToken,
                 ],
@@ -170,7 +173,7 @@ class WhatsappDashboard extends Component
             }
             $this->usedInstance = $token->device_name;
             $client = new Client();
-            $response = $client->request('GET','http://localhost:8541/api/get-all-instance',
+            $response = $client->request('GET','https://waraskop-ca63b0139ab7.herokuapp.com/api/get-all-instance',
             [
                 'headers' => [
                     'x-access-token' => $token->access_token,
@@ -209,11 +212,12 @@ class WhatsappDashboard extends Component
     {
         try{
             $client = new Client();
-            $response = $client->request('POST', 'http://localhost:8541/api/signin', [
+            $whatsappInstance = Whatsapp::first();
+            $response = $client->request('POST', 'https://waraskop-ca63b0139ab7.herokuapp.com/api/signin', [
                 // sent form-data
                 'form_params' => [
-                    'email' => 'admin@gmail.com',
-                    'password'=>'admin',
+                    'email' => $whatsappInstance->email,
+                    'password'=> $whatsappInstance->password,
                 ]
             ]);
             $response = json_decode($response->getBody()->getContents());

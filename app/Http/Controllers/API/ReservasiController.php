@@ -10,6 +10,10 @@ use App\Models\Customer;
 use App\Models\Reservasi;
 use Illuminate\Http\Request;
 use App\Http\Resources\ReservasiResource;
+use App\Models\Whatsapp;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ConnectException;
 
 class ReservasiController extends Controller
 {
@@ -125,10 +129,73 @@ class ReservasiController extends Controller
             'jam_mulai' => $formattedTimeMulai,
             'jam_selesai' => $formattedTimeSelesai
         ]);
-        
+        $send_whatsapp_status = $this->sendWhatsappMessage($nomer,$reservasi->kode_reservasi);
         // Return a success response or perform any additional actions
         return response()->json(['success' => 'Reservasi telah terbuat dengan Code '.$reservasi->kode_reservasi.' dan code berhasil dicopy', 'kode_reservasi' => $reservasi->kode_reservasi]);
         
+    }
+
+    protected function sendWhatsappMessage($number,$kodeReservasi)
+    {   
+        try{
+            $client = new Client();
+            $user = Whatsapp::first();
+            $accessToken = $user->access_token;
+            $deviceName = $user->device_name;
+            $response = $client->request('POST','https://waraskop-ca63b0139ab7.herokuapp.com/api/send-message',[
+                'headers' => [
+                    'x-access-token' => $accessToken,
+                ],
+                'form_params' => [
+                    'number' => $number,
+                    'message' => "Selamat anda berhasil melakukan reservasi dengan kode : *".$kodeReservasi."*"."\n\n"."harap tunggu admin kami untuk memverifikasi apakah pesanan anda diterima/ditolak",
+                    'token'=> $deviceName
+                ]
+            ]);
+            $response = json_decode($response->getBody()->getContents());
+            return $response;
+        }catch(ClientException $e){
+            $res = $e->getResponse()->getStatusCode();
+            if($res == 401){
+                $token = $this->requestLogin();
+                if($token){
+                    $whatsappInstance = Whatsapp::first();
+                    $whatsappInstance->update([
+                        'access_token' => $token
+                    ]);
+                    $this->sendWhatsappMessage($number,$kodeReservasi);
+                }
+            }
+        }
+        catch(ConnectException $e){
+            return false;
+        }
+    }
+
+    protected function requestLogin()
+    {
+        try{
+            $client = new Client();
+            $whatsappInstance = Whatsapp::first();
+            $response = $client->request('POST', 'https://waraskop-ca63b0139ab7.herokuapp.com/api/signin', [
+                // sent form-data
+                'form_params' => [
+                    'email' => $whatsappInstance->email,
+                    'password'=> $whatsappInstance->password,
+                ]
+            ]);
+            $response = json_decode($response->getBody()->getContents());
+            if($response->status){
+                return $response->token;
+            }
+            return false;
+        }
+        catch(ClientException $e){
+            return false;
+        }
+        catch(ConnectException $e){
+            return false;
+        }
     }
 
     public function getAvailableReservations(Request $request){
