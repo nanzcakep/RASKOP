@@ -3,15 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReservasiResource\Pages;
-use App\Filament\Resources\ReservasiResource\RelationManagers;
 use App\Models\Reservasi;
-use Faker\Provider\ar_EG\Text;
-use Filament\Actions\ViewAction;
-use Filament\Tables\Actions\Action;
-use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -19,16 +12,10 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Support\Markdown;
 use Filament\Tables;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ReservasiResource extends Resource
 {
@@ -86,12 +73,6 @@ class ReservasiResource extends Resource
                     'approved' => 'Approved',
                     'rejected' => 'Rejected',
                 ])
-                ->badge()
-                ->color(fn (string $state): string => match ($state) {
-                    'pending' => 'warning',
-                    'approved' => 'success',
-                    'rejected' => 'danger',
-                })
                 ->label('Status')
                 ->placeholder('Filter by Status'),
                 

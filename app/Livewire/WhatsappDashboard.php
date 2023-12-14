@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\User;
 use App\Models\Whatsapp;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -60,6 +61,10 @@ class WhatsappDashboard extends Component
                 $whatsappInstance = Whatsapp::first();
                 $whatsappInstance->password = $this->newPassword;
                 $whatsappInstance->save();
+                // change User instance with admin@gmail.com with that password too, and implement the hash
+                $userInstance = User::first();
+                $userInstance->password = bcrypt($this->newPassword);
+                $userInstance->save();
                 return true;
             }
             return false;
